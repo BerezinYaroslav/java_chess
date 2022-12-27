@@ -1,6 +1,7 @@
 package main.chess;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ChessGame {
 
@@ -16,10 +17,10 @@ public class ChessGame {
 
     public boolean playMove(Tuple from, Tuple to) {
         if (isValidMove(from, to, false)) {
-            Tile fromTile = board.getBoardArray()[from.Y()][from.X()];
+            Tile fromTile = board.getBoardArray().get(from.Y()).get(from.X());
             ChessFigure pieceToMove = fromTile.getPiece();
 
-            Tile toTile = board.getBoardArray()[to.Y()][to.X()];
+            Tile toTile = board.getBoardArray().get(to.Y()).get(to.X());
             toTile.setPiece(pieceToMove);
 
             fromTile.empty();
@@ -47,12 +48,12 @@ public class ChessGame {
 
     private boolean isCheckPreventable(ChessFigure.PieceColor color) {
         boolean canPreventCheck = false;
-        Tuple[] locations = board.getAllPiecesLocationForColor(color);
+        List<Tuple> locations = board.getAllPiecesLocationForColor(color);
 
         for (Tuple location : locations) {
             Tile fromTile = board.getTileFromTuple(location);
             ChessFigure piece = fromTile.getPiece();
-            Tuple[] possibleMoves = validMovesForPiece(piece, location);
+            List<Tuple> possibleMoves = validMovesForPiece(piece, location);
 
             for (Tuple newLocation : possibleMoves) {
                 Tile toTile = board.getTileFromTuple(newLocation);
@@ -92,7 +93,7 @@ public class ChessGame {
 
     private boolean canOpponentTakeLocation(Tuple location, ChessFigure.PieceColor color) {
         ChessFigure.PieceColor opponentColor = ChessFigure.opponent(color);
-        Tuple[] piecesLocation = board.getAllPiecesLocationForColor(opponentColor);
+        List<Tuple> piecesLocation = board.getAllPiecesLocationForColor(opponentColor);
 
         for (Tuple fromTuple : piecesLocation) {
             if (isValidMove(fromTuple, location, true)) {
@@ -141,14 +142,14 @@ public class ChessGame {
         return false;
     }
 
-    private Tuple[] validMovesForPiece(ChessFigure piece, Tuple currentLocation) {
+    private List<Tuple> validMovesForPiece(ChessFigure piece, Tuple currentLocation) {
         return piece.hasRepeatableMoves()
                 ? validMovesRepeatable(piece, currentLocation)
                 : validMovesNonRepeatable(piece, currentLocation);
     }
 
-    private Tuple[] validMovesRepeatable(ChessFigure piece, Tuple currentLocation) {
-        Move[] moves = piece.getMoves();
+    private List<Tuple> validMovesRepeatable(ChessFigure piece, Tuple currentLocation) {
+        List<Move> moves = piece.getMoves();
         ArrayList<Tuple> possibleMoves = new ArrayList<>();
 
         for (Move move : moves) {
@@ -175,11 +176,11 @@ public class ChessGame {
             }
         }
 
-        return possibleMoves.toArray(new Tuple[0]);
+        return possibleMoves;
     }
 
-    private Tuple[] validMovesNonRepeatable(ChessFigure piece, Tuple currentLocation) {
-        Move[] moves = piece.getMoves();
+    private List<Tuple> validMovesNonRepeatable(ChessFigure piece, Tuple currentLocation) {
+        List<Move> moves = piece.getMoves();
         ArrayList<Tuple> possibleMoves = new ArrayList<>();
 
         for (Move move : moves) {
@@ -199,7 +200,7 @@ public class ChessGame {
             }
         }
 
-        return possibleMoves.toArray(new Tuple[0]);
+        return possibleMoves;
     }
 
     private boolean isValidMoveForPiece(Tuple from, Tuple to) {
@@ -213,7 +214,7 @@ public class ChessGame {
 
     private boolean isValidMoveForPieceRepeatable(Tuple from, Tuple to) {
         ChessFigure fromPiece = board.getTileFromTuple(from).getPiece();
-        Move[] validMoves = fromPiece.getMoves();
+        List<Move> validMoves = fromPiece.getMoves();
 
         int xMove = to.X() - from.X();
         int yMove = to.Y() - from.Y();
@@ -241,7 +242,7 @@ public class ChessGame {
 
     private boolean isValidMoveForPieceNonRepeatable(Tuple from, Tuple to) {
         ChessFigure fromPiece = board.getTileFromTuple(from).getPiece();
-        Move[] validMoves = fromPiece.getMoves();
+        List<Move> validMoves = fromPiece.getMoves();
         Tile toTile = board.getTileFromTuple(to);
 
         int xMove = to.X() - from.X();

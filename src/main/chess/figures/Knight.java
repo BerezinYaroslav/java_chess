@@ -3,6 +3,10 @@ package main.chess.figures;
 import main.chess.ChessFigure;
 import main.chess.Move;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class Knight extends ChessFigure {
 
     public Knight(ChessFigure.PieceColor color) {
@@ -10,8 +14,8 @@ public class Knight extends ChessFigure {
     }
 
 
-    private static Move[] validMoves() {
-        return new Move[]{
+    private static List<Move> validMoves() {
+        return new ArrayList<>(Arrays.asList(
                 new Move(2, 1, false, false),
                 new Move(1, 2, false, false),
                 new Move(2, -1, false, false),
@@ -23,7 +27,6 @@ public class Knight extends ChessFigure {
                 new Move(-2, -1, false, false),
                 new Move(-1, -2, false, false),
                 new Move(-2, -1, false, false),
-                new Move(-1, -2, false, false)
-        };
+                new Move(-1, -2, false, false)));
     }
 }

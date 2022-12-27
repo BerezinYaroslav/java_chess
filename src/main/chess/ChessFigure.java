@@ -1,14 +1,16 @@
 package main.chess;
 
+import java.util.List;
+
 public abstract class ChessFigure {
     private final PieceType type;
     private final PieceColor color;
-    private final Move[] moves;
+    private final List<Move> moves;
     private final String name;
     private final char charValue;
     private final boolean repeatableMoves;
 
-    protected ChessFigure(PieceType type, PieceColor color, Move[] moves, boolean repeatableMoves) {
+    protected ChessFigure(PieceType type, PieceColor color, List<Move> moves, boolean repeatableMoves) {
         this.type = type;
         this.color = color;
         this.moves = moves;
@@ -25,7 +27,7 @@ public abstract class ChessFigure {
         White, Black
     }
 
-    public Move[] getMoves() {
+    public List<Move> getMoves() {
         return moves;
     }
 

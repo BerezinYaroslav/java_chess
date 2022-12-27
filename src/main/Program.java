@@ -8,8 +8,7 @@ import main.console.BoardDisplay;
 import java.util.Scanner;
 
 public class Program {
-
-    public static void main(String args[]) throws Exception {
+    public static void main(String[] args) throws Exception {
         InputHandler handler = new InputHandler();
         Scanner scanner = new Scanner(System.in);
         ChessGame game = new ChessGame();
